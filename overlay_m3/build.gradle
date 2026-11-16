@@ -14,22 +14,11 @@ android {
         versionName '1.0'
     }
 
-    signingConfigs {
-        release {
-            storeFile file('../../poc_gcrce/poc.keystore')
-            storePassword 'android'
-            keyAlias 'gd'
-            keyPassword 'android'
-        }
-    }
-
     buildTypes {
         release {
-            signingConfig signingConfigs.release
             minifyEnabled false
         }
         debug {
-            signingConfig signingConfigs.release
             minifyEnabled false
         }
     }
@@ -38,3 +27,5 @@ android {
         abortOnError false
     }
 }
+
+apply from: rootProject.file('signing.gradle')

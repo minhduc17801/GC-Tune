@@ -1,0 +1,20 @@
+// Shared APK signing for :app and :overlay_m3.
+// CI: KEYSTORE_FILE / KEYSTORE_PASSWORD / KEY_ALIAS (/ KEY_PASSWORD) from env.
+// Local: falls back to the original ../poc_gcrce/poc.keystore next to the repo.
+// No keystore found: debug uses the default debug key, release stays unsigned.
+def ks = file(System.getenv('KEYSTORE_FILE') ?: rootProject.file('../poc_gcrce/poc.keystore').path)
+
+android {
+    signingConfigs {
+        release {
+            storeFile ks
+            storePassword System.getenv('KEYSTORE_PASSWORD') ?: 'android'
+            keyAlias System.getenv('KEY_ALIAS') ?: 'gd'
+            keyPassword System.getenv('KEY_PASSWORD') ?: (System.getenv('KEYSTORE_PASSWORD') ?: 'android')
+        }
+    }
+    if (ks.exists()) {
+        buildTypes.release.signingConfig signingConfigs.release
+        buildTypes.debug.signingConfig signingConfigs.release
+    }
+}
