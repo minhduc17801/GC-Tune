@@ -79,7 +79,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
+          # Only the app: overlay_m3 is not referenced by the app (kept in CI artifacts only).
           cp apk/app/build/outputs/apk/release/app-release.apk "gctune-$TAG.apk"
-          cp apk/overlay_m3/build/outputs/apk/release/overlay_m3-release.apk "gctune-overlay-m3-$TAG.apk"
-          gh release create "$TAG" "gctune-$TAG.apk" "gctune-overlay-m3-$TAG.apk" \
+          gh release create "$TAG" "gctune-$TAG.apk" \
             --repo "$GITHUB_REPOSITORY" --title "$TAG" --generate-notes
