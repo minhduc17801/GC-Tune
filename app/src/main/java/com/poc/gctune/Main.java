@@ -4222,7 +4222,7 @@ public class Main extends Activity {
     }
 
     /** Splits "stdout/stderr + __RC__<n>" into its parts. */
-    private static void splitResult(String raw, Entry out) {
+    private void splitResult(String raw, Entry out) {
         if (raw == null) raw = "";
         Matcher m = RC_PAT.matcher(raw);
         if (m.find()) {
