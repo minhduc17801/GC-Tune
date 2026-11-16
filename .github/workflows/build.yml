@@ -3,6 +3,7 @@ name: Build
 on:
   push:
     branches: ['**']
+    tags: ['v*']
   pull_request:
   workflow_dispatch:
 
@@ -36,6 +37,12 @@ jobs:
             echo "::warning::KEYSTORE_BASE64 not set: debug APK uses the default debug key, release APK is unsigned."
           fi
 
+      - name: Require keystore for release tags
+        if: startsWith(github.ref, 'refs/tags/v') && env.KEYSTORE_FILE == ''
+        run: |
+          echo "::error::Tag build needs KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS secrets; refusing to publish an unsigned release."
+          exit 1
+
       - name: Build APKs
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -54,3 +61,25 @@ jobs:
       - name: Remove keystore
         if: always()
         run: rm -f "$RUNNER_TEMP/release.keystore"
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: gctune-apk-${{ github.sha }}
+          path: apk
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          cp apk/app/build/outputs/apk/release/app-release.apk "gctune-$TAG.apk"
+          cp apk/overlay_m3/build/outputs/apk/release/overlay_m3-release.apk "gctune-overlay-m3-$TAG.apk"
+          gh release create "$TAG" "gctune-$TAG.apk" "gctune-overlay-m3-$TAG.apk" \
+            --repo "$GITHUB_REPOSITORY" --title "$TAG" --generate-notes
