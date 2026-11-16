@@ -151,7 +151,7 @@ public class SetupActivity extends Activity {
         root.addView(statusRow, statusLp);
 
         TextView path = Ui.text(this,
-                "Ультраигровой режим → Поддерживаемые игры → Другое → GC Tune", 11.5f, Ui.MUTED);
+                getString(R.string.setup_path), 11.5f, Ui.MUTED);
         path.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams pathLp = new LinearLayout.LayoutParams(-2, -2);
         pathLp.gravity = Gravity.CENTER_HORIZONTAL;
@@ -161,7 +161,7 @@ public class SetupActivity extends Activity {
 
         root.addView(settingsButton());
 
-        TextView later = Ui.label(this, "Открыть GC Tune", 13.5f, Ui.MUTED);
+        TextView later = Ui.label(this, getString(R.string.setup_open_app), 13.5f, Ui.MUTED);
         later.setGravity(Gravity.CENTER);
         later.setPadding(Ui.dp(this, 20), Ui.dp(this, 12), Ui.dp(this, 20), Ui.dp(this, 12));
         later.setBackground(Ui.pillRipple(this, 0x00000000, 0x306CE5A8));
@@ -185,7 +185,7 @@ public class SetupActivity extends Activity {
         btn.setPadding(Ui.dp(this, 22), Ui.dp(this, 14), Ui.dp(this, 18), Ui.dp(this, 14));
         btn.setElevation(Ui.dp(this, 3));
 
-        TextView t = Ui.label(this, "Поддерживаемые игры", 14.5f, Ui.ACCENT);
+        TextView t = Ui.label(this, getString(R.string.common_supported_games), 14.5f, Ui.ACCENT);
         btn.addView(t);
 
         ImageView chevron = new ImageView(this);
@@ -213,7 +213,7 @@ public class SetupActivity extends Activity {
             try {
                 startActivity(gameMainIntent());
             } catch (Throwable t2) {
-                Toast.makeText(this, "Не удалось открыть настройки игры", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.setup_open_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -235,11 +235,11 @@ public class SetupActivity extends Activity {
         if (statusDot == null) return;
         if (isGame()) {
             statusDot.setImageDrawable(iconDotOn);
-            statusText.setText("GC Tune в списке игр");
+            statusText.setText(getString(R.string.setup_in_list));
             statusText.setTextColor(Ui.ACCENT);
         } else {
             statusDot.setImageDrawable(iconDotOff);
-            statusText.setText("не в списке игр");
+            statusText.setText(getString(R.string.common_not_in_games));
             statusText.setTextColor(Ui.MUTED);
         }
     }

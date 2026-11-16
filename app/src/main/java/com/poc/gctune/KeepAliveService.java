@@ -109,7 +109,7 @@ public class KeepAliveService extends Service {
             Notification n = new Notification.Builder(this, CH)
                     .setSmallIcon(android.R.drawable.ic_lock_idle_low_battery)
                     .setContentTitle("GC Tune")
-                    .setContentText("Защита фона активна")
+                    .setContentText(getString(R.string.notif_keepalive))
                     .setWhen(System.currentTimeMillis())
                     .setOngoing(true)
                     .build();

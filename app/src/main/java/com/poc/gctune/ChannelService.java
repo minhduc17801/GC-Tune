@@ -182,7 +182,7 @@ public class ChannelService extends Service {
             Notification n = new Notification.Builder(this, CH)
                     .setSmallIcon(android.R.drawable.ic_popup_sync)
                     .setContentTitle("GC Tune")
-                    .setContentText("Команда выполняется, ждём ответ канала…")
+                    .setContentText(getString(R.string.notif_cmd_running))
                     .setWhen(System.currentTimeMillis())
                     .setOngoing(true)
                     .build();
